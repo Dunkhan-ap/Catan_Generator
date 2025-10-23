@@ -1,12 +1,12 @@
 .label-colon::after {
-  content: "\00A0:"; /* espace insécable + deux-points */
+  content: "\00A0:";
 }
 
 /* ====== Variables globales ====== */
 :root {
   --plateau-size: min(98vw, 98svh / 0.866);
-  --hex-width: calc(var(--plateau-size) * 0.145);  /* 14.5% du plateau */
-  --hex-height: calc(var(--hex-width) * 1.1547); /* hauteur = largeur * √3/2*2 */
+  --hex-width: calc(var(--plateau-size) * 0.145);
+  --hex-height: calc(var(--hex-width) * 1.1547);
   --hex-offset-y: calc(var(--hex-height) * 1.255);
 
   /* Offsets bords */
@@ -27,7 +27,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-
   background-image: url('image/fondDEcran.png');
   background-size: cover;
   background-repeat: no-repeat;
@@ -62,14 +61,12 @@ button:hover {
   background-color: #0056b3;
 }
 
-/* État désactivé pendant la génération */
 button:disabled {
   background-color: #888 !important;
   cursor: not-allowed;
   opacity: 0.7;
 }
 
-/* Effet visuel pendant la génération */
 button.loading {
   background-color: #555 !important;
   color: #eee;
@@ -80,12 +77,12 @@ button.loading {
 html, body { 
   overscroll-behavior: contain; 
   scroll-behavior: auto !important;
-  overflow-anchor: none; /* empêche Safari de "réancrer" la vue */
+  overflow-anchor: none;
 }
 
 html { overflow-y: scroll; }
 
-/* === Uniformisation des coches (même style que les pions) === */
+/* ====== Cases à cocher stylisées ====== */
 input[type="checkbox"],
 input[type="radio"] {
   appearance: none;
@@ -101,14 +98,12 @@ input[type="radio"] {
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(255, 255, 255, 0.25);
 }
 
-/* 💡 Effet au survol */
 input[type="checkbox"]:hover,
 input[type="radio"]:hover {
   border-color: #00ff55;
   box-shadow: 0 0 8px rgba(0, 255, 85, 0.6), inset 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
-/* ✅ État coché */
 input[type="checkbox"]:checked,
 input[type="radio"]:checked {
   border-color: #00ff55;
@@ -116,7 +111,6 @@ input[type="radio"]:checked {
   box-shadow: 0 0 10px rgba(0, 255, 85, 0.6), inset 0 0 3px rgba(255, 255, 255, 0.25);
 }
 
-/* ✔ Coche stylisée avec ombre */
 input[type="checkbox"]:checked::after,
 input[type="radio"]:checked::after {
   content: "✔";
@@ -135,7 +129,6 @@ input[type="radio"]:checked::after {
   cursor: pointer;
 }
 
-/* Survol + label = légère mise en avant */
 .checkboxes label:hover {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 0.4em;
@@ -144,9 +137,7 @@ input[type="radio"]:checked::after {
 /* ====== Layout principal ====== */
 .main-container {
   display: grid;
-  grid-template-areas:
-    "top"
-    "bottom";
+  grid-template-areas: "top" "bottom";
   grid-template-rows: auto 1fr;
   justify-items: center;
   align-items: start;
@@ -155,7 +146,6 @@ input[type="radio"]:checked::after {
   gap: 2vmin;
 }
 
-/* Bloc supérieur (titre + options + analyse) */
 .top-block {
   display: flex;
   flex-direction: column;
@@ -166,7 +156,6 @@ input[type="radio"]:checked::after {
   height: 100%;
 }
 
-/* Bloc inférieur (plateau + badge) */
 .bottom-block {
   grid-area: bottom;
   display: flex;
@@ -175,7 +164,7 @@ input[type="radio"]:checked::after {
   width: 100%;
 }
 
-/* ===== Bloc d'analyse final ===== */
+/* ====== Bloc d'analyse ====== */
 #analyse-wrapper {
   width: 90%;
   max-width: 80vmin;
@@ -191,12 +180,10 @@ input[type="radio"]:checked::after {
   height: 15svh;
 }
 
-/* Barre cachée */
 #analyse-wrapper.empty {
   height: 0;
 }
 
-/* --- Barre d'analyse visible/invisible --- */
 #analyse-bar {
   margin-top: 1em;
   background-color: rgba(0, 0, 0, 0.4); 
@@ -209,14 +196,12 @@ input[type="radio"]:checked::after {
   transition: opacity 0.25s ease-in-out, visibility 0.25s;
 }
 
-/* --- Classe cachée sans jump --- */
 .hidden {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-/* Badge sous le plateau */
 .fan-badge {
   margin-top: 0px;
   text-align: center;
@@ -238,7 +223,6 @@ input[type="radio"]:checked::after {
   color: #fff;
 }
 
-/* === Titre === */
 .titre {
   margin: 2vmin 0;
   text-align: center;
@@ -257,14 +241,13 @@ input[type="radio"]:checked::after {
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
 }
 
-/* === Zone des options principales === */
 .zone-texte {
   gap: 0.8em 2.5em;
   justify-content: center;
   align-items: start;
 }
 
-/* === Style harmonisé pour les niveaux d'équilibrage === */
+/* ====== Niveaux d'équilibrage ====== */
 .zone-niveaux {
   display: flex;
   justify-content: center;
@@ -285,13 +268,11 @@ input[type="radio"]:checked::after {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-/* Zoom léger au survol */
 .zone-niveaux label:hover {
   transform: scale(1.05);
   color: #a8e6ff;
 }
 
-/* Coche stylisée */
 .zone-niveaux input[type="radio"] {
   appearance: none;
   width: 2vmin;
@@ -305,13 +286,11 @@ input[type="radio"]:checked::after {
   flex-shrink: 0;
 }
 
-/* Survol */
 .zone-niveaux input[type="radio"]:hover {
   border-color: #00ff55;
   box-shadow: 0 0 6px rgba(0, 255, 85, 0.6);
 }
 
-/* État coché avec coche ✔ ombrée */
 .zone-niveaux input[type="radio"]:checked {
   border-color: #00ff55;
   background: rgba(0, 255, 85, 0.15);
@@ -327,7 +306,7 @@ input[type="radio"]:checked::after {
   text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
 }
 
-/* === Sélection des couleurs : pions alignés horizontalement === */
+/* ====== Sélection des couleurs ====== */
 .zone-couleurs {
   display: flex !important;
   flex-direction: row !important;
@@ -338,7 +317,6 @@ input[type="radio"]:checked::after {
   gap: 6vmin;
 }
 
-/* Chaque pion = zone cliquable transparente */
 .zone-couleurs label {
   position: relative;
   display: flex;
@@ -352,19 +330,16 @@ input[type="radio"]:checked::after {
   margin: 0 0vmin;
 }
 
-/* Effet au survol : léger zoom */
 .zone-couleurs label:hover {
   transform: scale(1.1);
 }
 
-/* Cache la case native */
 .zone-couleurs input[type="checkbox"] {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-/* Image du pion */
 .zone-couleurs img {
   width: 90%;
   height: auto;
@@ -373,7 +348,6 @@ input[type="radio"]:checked::after {
   transition: filter 0.2s ease;
 }
 
-/* Coche verte discrète en bas à gauche */
 .zone-couleurs label::after {
   content: "✔";
   position: absolute;
@@ -386,25 +360,22 @@ input[type="radio"]:checked::after {
   text-shadow: 0 0 4px black;
 }
 
-/* ✅ Affiche la coche si coché */
 .zone-couleurs label:has(input[type="checkbox"]:checked)::after {
   opacity: 1;
 }
 
-/* === Bouton === */
 .bouton {
   text-align: center;
   margin-top: 1vmin;
 }
 
-/* Stabilisateur invisible */
 #keep-alive {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-/* ====== Plateau ====== */
+/* ====== Plateau - FIX iOS ====== */
 #plateau-container {
   flex-shrink: 0;
   position: relative;
@@ -414,14 +385,18 @@ input[type="radio"]:checked::after {
   display: flex;
   justify-content: center;
   align-items: center;
+  /* 🔹 Force le rendu GPU sur iOS */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
-/* Structure hexagones */
 #carteCatan {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
+  position: relative;
+  z-index: 10;
 }
 
 .ligne {
@@ -440,23 +415,18 @@ input[type="radio"]:checked::after {
   height: var(--hex-height);
   background-size: cover;
   background-position: center;
-  clip-path: polygon(
-    50% 0%,
-    100% 25%,
-    100% 75%,
-    50% 100%,
-    0% 75%,
-    0% 25%
-  );
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   position: relative;
   z-index: 10;
+  /* 🔹 Force l'anti-aliasing sur iOS */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .ligne .hex + .hex { 
   margin-left: calc(var(--hex-width) * -0.005); 
 }
 
-/* Numéros */
 .numero {
   position: absolute;
   top: 50%; 
@@ -486,38 +456,37 @@ input[type="radio"]:checked::after {
 .bord.b5 { transform: rotate(240deg)  translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
 .bord.b6 { transform: rotate(300deg)  translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
 
-/* ====== Hexagones de fond ====== */
+/* ====== Hexagones de fond - FIX PRÉCIS iOS ====== */
 .hex-fond {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  clip-path: polygon(
-    25% 0%,
-    75% 0%,
-    100% 50%,
-    75% 100%,
-    25% 100%,
-    0% 50%
-  );
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   z-index: 1;
   transition: opacity 0.4s ease;
+  /* 🔹 Force le rendu précis sur iOS */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translate(-50%, -50%) translateZ(0);
+  -webkit-transform: translate(-50%, -50%) translateZ(0);
+  will-change: transform;
 }
 
-/* Devient visible une fois la génération terminée */
 .hex-fond.visible {
   opacity: 1;
 }
 
+/* 🎯 AJUSTEMENTS PRÉCIS iOS */
 .hex-mer {
-  width: calc(var(--hex-width) * 6.55);
-  height: calc(var(--hex-width) * 6.55 * 0.866);
+  width: calc(var(--hex-width) * 6.56);  /* 6.55 → 6.56 */
+  height: calc(var(--hex-width) * 6.56 * 0.866);
   background-color: #5FA3E3;
 }
 
 .hex-route {
-  width: calc(var(--hex-width) * 5.45);
-  height: calc(var(--hex-width) * 5.45 * 0.866);
+  width: calc(var(--hex-width) * 5.46);  /* 5.45 → 5.46 */
+  height: calc(var(--hex-width) * 5.46 * 0.866);
   background-color: #F5E781;
 }
 
@@ -536,7 +505,6 @@ input[type="radio"]:checked::after {
   transform: translate(-50%, -50%);
 }
 
-/* Couleurs / images spécifiques */
 .col-rouge  { background: url("image/pion/Crouge.png") center/contain no-repeat; }
 .col-bleu   { background: url("image/pion/Cbleu.png") center/contain no-repeat; }
 .col-orange { background: url("image/pion/Corange.png") center/contain no-repeat; }
@@ -550,7 +518,6 @@ input[type="radio"]:checked::after {
   z-index: 45;
 }
 
-/* ====== Routes décoratives ====== */
 #routes-layer .route {
   position: absolute;
   width: calc(var(--hex-width) * 0.35);
@@ -564,91 +531,68 @@ input[type="radio"]:checked::after {
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
 }
 
-/* ====== Images de routes par couleur ====== */
 #routes-layer .rou-rouge  { background-image: url("image/pion/Rrouge.png"); }
 #routes-layer .rou-bleu   { background-image: url("image/pion/Rbleu.png"); }
 #routes-layer .rou-orange { background-image: url("image/pion/Rorange.png"); }
 #routes-layer .rou-beige  { background-image: url("image/pion/Rbeige.png"); }
 
-/* Positions des colonies */
-/* L1 – Y=17% (3 points) */
+/* ====== Positions des colonies ====== */
 .pos1 { top: 16.7%; left: 37.55%; }
 .pos2 { top: 16.7%; left: 49.95%; }
 .pos3 { top: 16.7%; left: 62.4%; }
-
-/* L2 – Y=20.5% (4 points) */
 .pos4 { top: 20.7%; left: 31.4%; }
 .pos5 { top: 20.7%; left: 43.8%; }
 .pos6 { top: 20.7%; left: 56.2%; }
 .pos7 { top: 20.7%; left: 68.6%; }
-
-/* L3 – Y=29.5% (4 points, identique L2) */
 .pos8  { top: 29.2%; left: 31.4%; }
 .pos9  { top: 29.2%; left: 43.8%; }
 .pos10 { top: 29.2%; left: 56.2%; }
 .pos11 { top: 29.2%; left: 68.6%; }
-
-/* L4 – Y=33% (5 points) */
 .pos12 { top: 33.2%; left: 25.2%; }
 .pos13 { top: 33.2%; left: 37.6%; }
 .pos14 { top: 33.2%; left: 50%; }
 .pos15 { top: 33.2%; left: 62.4%; }
 .pos16 { top: 33.2%; left: 74.8%; }
-
-/* L5 – Y=42% (5 points, identique L4) */
 .pos17 { top: 41.7%; left: 25.2%; }
 .pos18 { top: 41.7%; left: 37.6%; }
 .pos19 { top: 41.7%; left: 50%; }
 .pos20 { top: 41.7%; left: 62.4%; }
 .pos21 { top: 41.7%; left: 74.8%; }
-
-/* L6 – Y=45.5% (6 points) */
 .pos22 { top: 45.7%; left: 19%; }
 .pos23 { top: 45.7%; left: 31.4%; }
 .pos24 { top: 45.7%; left: 43.8%; }
 .pos25 { top: 45.7%; left: 56.2%; }
 .pos26 { top: 45.7%; left: 68.6%; }
 .pos27 { top: 45.7%; left: 81%; }
-
-/* L7 – Y=54.5% (6 points, identique L6) */
 .pos28 { top: 54.2%; left: 19%; }
 .pos29 { top: 54.2%; left: 31.4%; }
 .pos30 { top: 54.2%; left: 43.8%; }
 .pos31 { top: 54.2%; left: 56.2%; }
 .pos32 { top: 54.2%; left: 68.6%; }
 .pos33 { top: 54.2%; left: 81%; }
-
-/* L8 – Y=58% (5 points, identique L5/L4) */
 .pos34 { top: 58.2%; left: 25.2%; }
 .pos35 { top: 58.2%; left: 37.6%; }
 .pos36 { top: 58.2%; left: 50%; }
 .pos37 { top: 58.2%; left: 62.4%; }
 .pos38 { top: 58.2%; left: 74.8%; }
-
-/* L9 – Y=67% (5 points, identique L8/L5/L4) */
 .pos39 { top: 66.7%; left: 25.2%; }
 .pos40 { top: 66.7%; left: 37.6%; }
 .pos41 { top: 66.7%; left: 50%; }
 .pos42 { top: 66.7%; left: 62.4%; }
 .pos43 { top: 66.7%; left: 74.8%; }
-
-/* L10 – Y=70.5% (4 points, identique L2/L3) */
 .pos44 { top: 70.7%; left: 31.4%; }
 .pos45 { top: 70.7%; left: 43.8%; }
 .pos46 { top: 70.7%; left: 56.2%; }
 .pos47 { top: 70.7%; left: 68.6%; }
-
-/* L11 – Y=79.5% (4 points, identique L2/L3) */
 .pos48 { top: 79.2%; left: 31.4%; }
 .pos49 { top: 79.2%; left: 43.8%; }
 .pos50 { top: 79.2%; left: 56.2%; }
 .pos51 { top: 79.2%; left: 68.6%; }
-
-/* L12 – Y=83% (3 points, identique L1) */
 .pos52 { top: 83.2%; left: 37.6%; }
 .pos53 { top: 83.2%; left: 50%; }
 .pos54 { top: 83.2%; left: 62.4%; }
 
+/* ====== Badges ====== */
 .badge {
   display: inline-block;
   background: rgba(255, 255, 255, 0.15);
@@ -682,7 +626,7 @@ input[type="radio"]:checked::after {
 .dot-orange { background-color: #e67e22; }
 .dot-beige  { background-color: #d2b48c; }
 
-/* ===== 🌍 Sélecteur de langue en haut à gauche ===== */
+/* ====== Sélecteur de langue ====== */
 #lang-switch {
   position: absolute;
   top: 1vmin;
@@ -713,18 +657,15 @@ input[type="radio"]:checked::after {
   display: block;
 }
 
-/* Pays actif mis en avant */
 #lang-switch button.active img {
   transform: scale(1.15);
   opacity: 1;
 }
 
-/* Les autres un peu atténués */
 #lang-switch button:not(.active) img {
   opacity: 0.6;
 }
 
-/* Effet au survol */
 #lang-switch button:hover img {
   transform: scale(1.1);
   opacity: 0.9;
@@ -751,6 +692,17 @@ input[type="radio"]:checked::after {
   .logo-bas-droite {
     width: 10vmin;
     bottom: 4vmin;
+  }
+  
+  /* 🔹 Ajustement plus précis sur petits écrans */
+  .hex-mer {
+    width: calc(var(--hex-width) * 6.57);
+    height: calc(var(--hex-width) * 6.57 * 0.866);
+  }
+  
+  .hex-route {
+    width: calc(var(--hex-width) * 5.47);
+    height: calc(var(--hex-width) * 5.47 * 0.866);
   }
 }
 
