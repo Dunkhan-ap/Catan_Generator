@@ -4,16 +4,17 @@
 
 /* ====== Variables globales ====== */
 :root {
-  --hex-width: 14.5cqmin;                         /* largeur d’un hex (relative au plateau) */
+  --plateau-size: min(98vw, 98svh / 0.866);
+  --hex-width: calc(var(--plateau-size) * 0.145);  /* 14.5% du plateau */
   --hex-height: calc(var(--hex-width) * 1.1547); /* hauteur = largeur * √3/2*2 */
   --hex-offset-y: calc(var(--hex-height) * 1.255);
 
   /* Offsets bords */
   --bord-radius: calc(var(--hex-height) * 2.085);
-  --bord-offset-x: -22.5cqmin;
-  --bord-offset-y: -6.3cqmin;
-  --bord-local-x: -6.07cqmin;
-  --bord-local-y: 0cqmin;
+  --bord-offset-x: calc(var(--plateau-size) * -0.225);
+  --bord-offset-y: calc(var(--plateau-size) * -0.063);
+  --bord-local-x: calc(var(--plateau-size) * -0.0607);
+  --bord-local-y: 0;
 }
 
 /* ====== Base page ====== */
@@ -85,9 +86,6 @@ html, body {
 html { overflow-y: scroll; }
 
 /* === Uniformisation des coches (même style que les pions) === */
-
-/* Cache les cases natives */
-/* === Style harmonisé pour toutes les cases cochables === */
 input[type="checkbox"],
 input[type="radio"] {
   appearance: none;
@@ -100,7 +98,6 @@ input[type="radio"] {
   cursor: pointer;
   transition: all 0.25s ease;
   flex-shrink: 0;
-  /* 🔹 Ombre subtile sur les bords */
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(255, 255, 255, 0.25);
 }
 
@@ -133,12 +130,10 @@ input[type="radio"]:checked::after {
 
 .checkboxes label {
   display: flex;
-  align-items: center; /* ✅ centrage plus homogène cross-browser */
+  align-items: center;
   gap: 0.6em;
   cursor: pointer;
 }
-
-
 
 /* Survol + label = légère mise en avant */
 .checkboxes label:hover {
@@ -146,11 +141,7 @@ input[type="radio"]:checked::after {
   border-radius: 0.4em;
 }
 
-
-
 /* ====== Layout principal ====== */
-/* === Nouvelle mise en page principale === */
-/* === Structure principale === */
 .main-container {
   display: grid;
   grid-template-areas:
@@ -161,20 +152,19 @@ input[type="radio"]:checked::after {
   align-items: start;
   width: 100%;
   height: 100svh;
-  gap: 2vmin; /* petit espace entre les blocs */
+  gap: 2vmin;
 }
 
 /* Bloc supérieur (titre + options + analyse) */
 .top-block {
   display: flex;
   flex-direction: column;
-  align-items: center;      /* ✅ Centre horizontalement le titre et les options */
-  justify-content: flex-start; /* Garde le titre en haut du bloc */
+  align-items: center;
+  justify-content: flex-start;
   text-align: center;
   width: 100%;
   height: 100%;
 }
-
 
 /* Bloc inférieur (plateau + badge) */
 .bottom-block {
@@ -185,9 +175,7 @@ input[type="radio"]:checked::after {
   width: 100%;
 }
 
-
-/* ===== Bloc d’analyse final ===== */
-/* --- Conteneur permanent qui garde la place --- */
+/* ===== Bloc d'analyse final ===== */
 #analyse-wrapper {
   width: 90%;
   max-width: 80vmin;
@@ -195,7 +183,7 @@ input[type="radio"]:checked::after {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  overflow: hidden; /* évite le reflow */
+  overflow: hidden;
   transition: height 0.3s ease;
 }
 
@@ -203,14 +191,12 @@ input[type="radio"]:checked::after {
   height: 15svh;
 }
 
-
-
 /* Barre cachée */
 #analyse-wrapper.empty {
-  height: 0; /* le trou disparaît */
+  height: 0;
 }
 
-/* --- Barre d’analyse visible/invisible --- */
+/* --- Barre d'analyse visible/invisible --- */
 #analyse-bar {
   margin-top: 1em;
   background-color: rgba(0, 0, 0, 0.4); 
@@ -230,13 +216,6 @@ input[type="radio"]:checked::after {
   pointer-events: none;
 }
 
-
-
-/* ====== Classe utilitaire cachée ====== */
-.hidden {
-  display: none !important;
-}
-
 /* Badge sous le plateau */
 .fan-badge {
   margin-top: 0px;
@@ -248,7 +227,6 @@ input[type="radio"]:checked::after {
 }
 
 /* ====== Options ====== */
-/* ====== Nouvelle disposition des options ====== */
 .options-container {
   display: flex;
   flex-direction: column;
@@ -262,16 +240,16 @@ input[type="radio"]:checked::after {
 
 /* === Titre === */
 .titre {
-  margin: 2vmin 0; /* espace doux en haut et bas */
+  margin: 2vmin 0;
   text-align: center;
 }
-
 
 .titre h1 {
   font-size: 3.4vmin;
   margin-bottom: 0.3em;
   text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
 }
+
 .titre h2 {
   margin-top: 0.4em;
   font-weight: 600;
@@ -357,7 +335,7 @@ input[type="radio"]:checked::after {
   align-items: center;
   flex-wrap: wrap;
   margin-top: 1.5vmin;
-  gap: 6vmin; /* utile si le navigateur le respecte */
+  gap: 6vmin;
 }
 
 /* Chaque pion = zone cliquable transparente */
@@ -371,7 +349,7 @@ input[type="radio"]:checked::after {
   border-radius: 0.8vmin;
   cursor: pointer;
   transition: transform 0.2s ease;
-  margin: 0 0vmin; /* 🔹 espacement horizontal manuel */
+  margin: 0 0vmin;
 }
 
 /* Effet au survol : léger zoom */
@@ -422,24 +400,17 @@ input[type="radio"]:checked::after {
 /* Stabilisateur invisible */
 #keep-alive {
   position: absolute;
-  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  inset: 0;
   pointer-events: none;
 }
 
-
-
 /* ====== Plateau ====== */
 #plateau-container {
-  container-type: size;
-
   flex-shrink: 0;
   position: relative;
   margin: auto;
-
-  /* occupe toujours le max possible sans déformer */
-  width: min(98vw, 98svh / 0.866);
-  height: calc(min(98vw, 98svh / 0.866) * 0.866);
-
+  width: var(--plateau-size);
+  height: calc(var(--plateau-size) * 0.866);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -458,7 +429,10 @@ input[type="radio"]:checked::after {
   gap: 0;
   margin-top: calc(var(--hex-offset-y) * -1 + var(--hex-height));
 }
-.ligne:first-child { margin-top: 0; }
+
+.ligne:first-child { 
+  margin-top: 0; 
+}
 
 /* ====== Hexagone ====== */
 .hex {
@@ -477,12 +451,16 @@ input[type="radio"]:checked::after {
   position: relative;
   z-index: 10;
 }
-.ligne .hex + .hex { margin-left: calc(var(--hex-width) * -0.005); }
+
+.ligne .hex + .hex { 
+  margin-left: calc(var(--hex-width) * -0.005); 
+}
 
 /* Numéros */
 .numero {
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%; 
+  left: 50%;
   transform: translate(-50%, -50%);
   width: 40%;
 }
@@ -495,10 +473,12 @@ input[type="radio"]:checked::after {
   transform-origin: center;
   z-index: 5;
 }
+
 .bord img {
   width: calc(var(--hex-width) * 3.1);
   height: auto;
 }
+
 .bord.b1 { transform: rotate(0deg)    translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
 .bord.b2 { transform: rotate(60deg)   translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
 .bord.b3 { transform: rotate(120deg)  translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
@@ -521,8 +501,6 @@ input[type="radio"]:checked::after {
     0% 50%
   );
   z-index: 1;
-
-   /* --- Ajout pour effet d’apparition --- */
   transition: opacity 0.4s ease;
 }
 
@@ -536,6 +514,7 @@ input[type="radio"]:checked::after {
   height: calc(var(--hex-width) * 6.55 * 0.866);
   background-color: #5FA3E3;
 }
+
 .hex-route {
   width: calc(var(--hex-width) * 5.45);
   height: calc(var(--hex-width) * 5.45 * 0.866);
@@ -562,8 +541,6 @@ input[type="radio"]:checked::after {
 .col-bleu   { background: url("image/pion/Cbleu.png") center/contain no-repeat; }
 .col-orange { background: url("image/pion/Corange.png") center/contain no-repeat; }
 .col-beige  { background: url("image/pion/Cbeige.png") center/contain no-repeat; }
-
-
 
 /* ====== Calque routes ====== */
 #routes-layer {
@@ -593,8 +570,7 @@ input[type="radio"]:checked::after {
 #routes-layer .rou-orange { background-image: url("image/pion/Rorange.png"); }
 #routes-layer .rou-beige  { background-image: url("image/pion/Rbeige.png"); }
 
-
-/* Exemple positions pour l’hex central */
+/* Positions des colonies */
 /* L1 – Y=17% (3 points) */
 .pos1 { top: 16.7%; left: 37.55%; }
 .pos2 { top: 16.7%; left: 49.95%; }
@@ -673,7 +649,6 @@ input[type="radio"]:checked::after {
 .pos53 { top: 83.2%; left: 50%; }
 .pos54 { top: 83.2%; left: 62.4%; }
 
-
 .badge {
   display: inline-block;
   background: rgba(255, 255, 255, 0.15);
@@ -701,12 +676,11 @@ input[type="radio"]:checked::after {
   border-radius: 50%;
   margin-right: 0.4em;
 }
+
 .dot-rouge  { background-color: #e74c3c; }
 .dot-bleu   { background-color: #3498db; }
 .dot-orange { background-color: #e67e22; }
 .dot-beige  { background-color: #d2b48c; }
-
-
 
 /* ===== 🌍 Sélecteur de langue en haut à gauche ===== */
 #lang-switch {
@@ -734,13 +708,10 @@ input[type="radio"]:checked::after {
   border: 0.15vmin solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 0 0.6vmin rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease, opacity 0.2s ease;
-  object-fit: cover;          /* remplit complètement la zone */
-  object-position: center;    /* centré parfaitement */
-  display: block;             /* supprime les petits espaces inline */
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
-
-
-
 
 /* Pays actif mis en avant */
 #lang-switch button.active img {
@@ -760,52 +731,63 @@ input[type="radio"]:checked::after {
 }
 
 .logo-bas-droite {
-  position: fixed;      /* reste visible même au scroll */
-  bottom: 6vmin;         /* marge par rapport au bas */
-  right: 0vmin;          /* marge par rapport à la droite */
-  width: 12vmin;          /* taille du logo */
-  height: auto;         /* garde les proportions */
-  z-index: 1000;        /* reste au-dessus du contenu */
-  pointer-events: none; /* évite de bloquer les clics sur le contenu */
+  position: fixed;
+  bottom: 6vmin;
+  right: 0vmin;
+  width: 12vmin;
+  height: auto;
+  z-index: 1000;
+  pointer-events: none;
 }
 
-@media (min-width: 487px) {
+/* ====== Media Queries ====== */
+
+/* Très petits écrans */
+@media (max-width: 480px) {
+  :root {
+    --plateau-size: min(95vw, 95svh / 0.866);
+  }
+  
   .logo-bas-droite {
-    bottom: 0vmin;         /* marge par rapport au bas */
-    right: 0vmin;          /* marge par rapport à la droite */
-    width: 8vmin;          /* taille du logo */
+    width: 10vmin;
+    bottom: 4vmin;
   }
 }
 
+/* Écrans moyens */
+@media (min-width: 487px) {
+  .logo-bas-droite {
+    bottom: 0vmin;
+    right: 0vmin;
+    width: 8vmin;
+  }
+}
 
-
-
-/* === Mode paysage : défilement pour la zone des options === */
+/* Mode paysage */
 @media (min-aspect-ratio: 1872/1080) {
   .main-container {
     grid-template-areas: "top bottom";
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     align-items: center;
-    justify-items: stretch; /* ✅ Étire chaque bloc dans toute sa cellule */
-    grid-template-columns: 1fr 1fr;
+    justify-items: stretch;
   }
 
   .top-block {
-    align-items: center;       /* ✅ Centre le titre horizontalement */
+    align-items: center;
     justify-content: flex-start;
-    width: 100%;               /* ✅ S’assure qu’il prenne toute la colonne */
+    width: 100%;
     text-align: center;
   }
 
   .titre {
-    text-align: center;        /* ✅ Centre le texte dans le bloc */
+    text-align: center;
     margin: 2vmin 0;
     width: 100%;
   }
 
   .scrollable-content {
-    max-height: calc(100svh - 17.5vmin);; /* zone de défilement limitée */
+    max-height: calc(100svh - 17.5vmin);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
@@ -814,10 +796,12 @@ input[type="radio"]:checked::after {
   .scrollable-content::-webkit-scrollbar {
     width: 0.8vmin;
   }
+  
   .scrollable-content::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.4);
     border-radius: 1vmin;
   }
+  
   .scrollable-content::-webkit-scrollbar-track {
     background: transparent;
   }
