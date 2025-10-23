@@ -10,10 +10,15 @@
 
   /* Offsets bords */
   --bord-radius: calc(var(--hex-height) * 2.085);
-  --bord-offset-x: -22.5cqmin;
+  /*--bord-offset-x: -22.5cqmin;
   --bord-offset-y: -6.3cqmin;
   --bord-local-x: -6.07cqmin;
-  --bord-local-y: 0cqmin;
+  --bord-local-y: 0cqmin;*/
+
+  --bord-offset-x: -19.5%;
+  --bord-offset-y: -6.4%;
+  --bord-local-x: -13.5%;
+  --bord-local-y: 0%;
 }
 
 /* ====== Base page ====== */
