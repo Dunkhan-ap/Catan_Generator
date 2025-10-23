@@ -22,7 +22,7 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
-  height: 100vh;
+  height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -160,7 +160,7 @@ input[type="radio"]:checked::after {
   justify-items: center;
   align-items: start;
   width: 100%;
-  height: 100vh;
+  height: 100svh;
   gap: 2vmin; /* petit espace entre les blocs */
 }
 
@@ -437,8 +437,8 @@ input[type="radio"]:checked::after {
   margin: auto;
 
   /* occupe toujours le max possible sans déformer */
-  width: min(98vw, 98vh / 0.866);
-  height: calc(min(98vw, 98vh / 0.866) * 0.866);
+  width: min(98vw, 98svh / 0.866);
+  height: calc(min(98vw, 98svh / 0.866) * 0.866);
 
   display: flex;
   justify-content: center;
@@ -805,7 +805,7 @@ input[type="radio"]:checked::after {
   }
 
   .scrollable-content {
-    max-height: calc(100vh - 17.5vmin);; /* zone de défilement limitée */
+    max-height: calc(100svh - 17.5vmin);; /* zone de défilement limitée */
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
