@@ -1,20 +1,19 @@
 .label-colon::after {
-  content: "\00A0:";
+  content: "\00A0:"; /* espace insécable + deux-points */
 }
 
 /* ====== Variables globales ====== */
 :root {
-  --plateau-size: min(98vw, 98svh / 0.866);
-  --hex-width: calc(var(--plateau-size) * 0.145);
-  --hex-height: calc(var(--hex-width) * 1.1547);
+  --hex-width: 14.5cqmin;                         /* largeur d’un hex (relative au plateau) */
+  --hex-height: calc(var(--hex-width) * 1.1547); /* hauteur = largeur * √3/2*2 */
   --hex-offset-y: calc(var(--hex-height) * 1.255);
 
   /* Offsets bords */
   --bord-radius: calc(var(--hex-height) * 2.085);
-  --bord-offset-x: calc(var(--plateau-size) * -0.225);
-  --bord-offset-y: calc(var(--plateau-size) * -0.063);
-  --bord-local-x: calc(var(--plateau-size) * -0.0607);
-  --bord-local-y: 0;
+  --bord-offset-x: -22.5cqmin;
+  --bord-offset-y: -6.3cqmin;
+  --bord-local-x: -6.07cqmin;
+  --bord-local-y: 0cqmin;
 }
 
 /* ====== Base page ====== */
@@ -23,10 +22,11 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
-  height: 100svh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+
   background-image: url('image/fondDEcran.png');
   background-size: cover;
   background-repeat: no-repeat;
@@ -61,12 +61,14 @@ button:hover {
   background-color: #0056b3;
 }
 
+/* État désactivé pendant la génération */
 button:disabled {
   background-color: #888 !important;
   cursor: not-allowed;
   opacity: 0.7;
 }
 
+/* Effet visuel pendant la génération */
 button.loading {
   background-color: #555 !important;
   color: #eee;
@@ -77,12 +79,15 @@ button.loading {
 html, body { 
   overscroll-behavior: contain; 
   scroll-behavior: auto !important;
-  overflow-anchor: none;
+  overflow-anchor: none; /* empêche Safari de "réancrer" la vue */
 }
 
 html { overflow-y: scroll; }
 
-/* ====== Cases à cocher stylisées ====== */
+/* === Uniformisation des coches (même style que les pions) === */
+
+/* Cache les cases natives */
+/* === Style harmonisé pour toutes les cases cochables === */
 input[type="checkbox"],
 input[type="radio"] {
   appearance: none;
@@ -95,15 +100,18 @@ input[type="radio"] {
   cursor: pointer;
   transition: all 0.25s ease;
   flex-shrink: 0;
+  /* 🔹 Ombre subtile sur les bords */
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.5), inset 0 0 2px rgba(255, 255, 255, 0.25);
 }
 
+/* 💡 Effet au survol */
 input[type="checkbox"]:hover,
 input[type="radio"]:hover {
   border-color: #00ff55;
   box-shadow: 0 0 8px rgba(0, 255, 85, 0.6), inset 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
+/* ✅ État coché */
 input[type="checkbox"]:checked,
 input[type="radio"]:checked {
   border-color: #00ff55;
@@ -111,6 +119,7 @@ input[type="radio"]:checked {
   box-shadow: 0 0 10px rgba(0, 255, 85, 0.6), inset 0 0 3px rgba(255, 255, 255, 0.25);
 }
 
+/* ✔ Coche stylisée avec ombre */
 input[type="checkbox"]:checked::after,
 input[type="radio"]:checked::after {
   content: "✔";
@@ -124,38 +133,50 @@ input[type="radio"]:checked::after {
 
 .checkboxes label {
   display: flex;
-  align-items: center;
+  align-items: center; /* ✅ centrage plus homogène cross-browser */
   gap: 0.6em;
   cursor: pointer;
 }
 
+
+
+/* Survol + label = légère mise en avant */
 .checkboxes label:hover {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 0.4em;
 }
 
+
+
 /* ====== Layout principal ====== */
+/* === Nouvelle mise en page principale === */
+/* === Structure principale === */
 .main-container {
   display: grid;
-  grid-template-areas: "top" "bottom";
+  grid-template-areas:
+    "top"
+    "bottom";
   grid-template-rows: auto 1fr;
   justify-items: center;
   align-items: start;
   width: 100%;
-  height: 100svh;
-  gap: 2vmin;
+  height: 100vh;
+  gap: 2vmin; /* petit espace entre les blocs */
 }
 
+/* Bloc supérieur (titre + options + analyse) */
 .top-block {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: center;      /* ✅ Centre horizontalement le titre et les options */
+  justify-content: flex-start; /* Garde le titre en haut du bloc */
   text-align: center;
   width: 100%;
   height: 100%;
 }
 
+
+/* Bloc inférieur (plateau + badge) */
 .bottom-block {
   grid-area: bottom;
   display: flex;
@@ -164,7 +185,9 @@ input[type="radio"]:checked::after {
   width: 100%;
 }
 
-/* ====== Bloc d'analyse ====== */
+
+/* ===== Bloc d’analyse final ===== */
+/* --- Conteneur permanent qui garde la place --- */
 #analyse-wrapper {
   width: 90%;
   max-width: 80vmin;
@@ -172,7 +195,7 @@ input[type="radio"]:checked::after {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  overflow: hidden;
+  overflow: hidden; /* évite le reflow */
   transition: height 0.3s ease;
 }
 
@@ -180,10 +203,14 @@ input[type="radio"]:checked::after {
   height: 15svh;
 }
 
+
+
+/* Barre cachée */
 #analyse-wrapper.empty {
-  height: 0;
+  height: 0; /* le trou disparaît */
 }
 
+/* --- Barre d’analyse visible/invisible --- */
 #analyse-bar {
   margin-top: 1em;
   background-color: rgba(0, 0, 0, 0.4); 
@@ -196,12 +223,21 @@ input[type="radio"]:checked::after {
   transition: opacity 0.25s ease-in-out, visibility 0.25s;
 }
 
+/* --- Classe cachée sans jump --- */
 .hidden {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
+
+
+/* ====== Classe utilitaire cachée ====== */
+.hidden {
+  display: none !important;
+}
+
+/* Badge sous le plateau */
 .fan-badge {
   margin-top: 0px;
   text-align: center;
@@ -212,6 +248,7 @@ input[type="radio"]:checked::after {
 }
 
 /* ====== Options ====== */
+/* ====== Nouvelle disposition des options ====== */
 .options-container {
   display: flex;
   flex-direction: column;
@@ -223,17 +260,18 @@ input[type="radio"]:checked::after {
   color: #fff;
 }
 
+/* === Titre === */
 .titre {
-  margin: 2vmin 0;
+  margin: 2vmin 0; /* espace doux en haut et bas */
   text-align: center;
 }
+
 
 .titre h1 {
   font-size: 3.4vmin;
   margin-bottom: 0.3em;
   text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
 }
-
 .titre h2 {
   margin-top: 0.4em;
   font-weight: 600;
@@ -241,13 +279,14 @@ input[type="radio"]:checked::after {
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
 }
 
+/* === Zone des options principales === */
 .zone-texte {
   gap: 0.8em 2.5em;
   justify-content: center;
   align-items: start;
 }
 
-/* ====== Niveaux d'équilibrage ====== */
+/* === Style harmonisé pour les niveaux d'équilibrage === */
 .zone-niveaux {
   display: flex;
   justify-content: center;
@@ -268,11 +307,13 @@ input[type="radio"]:checked::after {
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
+/* Zoom léger au survol */
 .zone-niveaux label:hover {
   transform: scale(1.05);
   color: #a8e6ff;
 }
 
+/* Coche stylisée */
 .zone-niveaux input[type="radio"] {
   appearance: none;
   width: 2vmin;
@@ -286,11 +327,13 @@ input[type="radio"]:checked::after {
   flex-shrink: 0;
 }
 
+/* Survol */
 .zone-niveaux input[type="radio"]:hover {
   border-color: #00ff55;
   box-shadow: 0 0 6px rgba(0, 255, 85, 0.6);
 }
 
+/* État coché avec coche ✔ ombrée */
 .zone-niveaux input[type="radio"]:checked {
   border-color: #00ff55;
   background: rgba(0, 255, 85, 0.15);
@@ -306,7 +349,7 @@ input[type="radio"]:checked::after {
   text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
 }
 
-/* ====== Sélection des couleurs ====== */
+/* === Sélection des couleurs : pions alignés horizontalement === */
 .zone-couleurs {
   display: flex !important;
   flex-direction: row !important;
@@ -314,9 +357,10 @@ input[type="radio"]:checked::after {
   align-items: center;
   flex-wrap: wrap;
   margin-top: 1.5vmin;
-  gap: 6vmin;
+  gap: 6vmin; /* utile si le navigateur le respecte */
 }
 
+/* Chaque pion = zone cliquable transparente */
 .zone-couleurs label {
   position: relative;
   display: flex;
@@ -327,19 +371,22 @@ input[type="radio"]:checked::after {
   border-radius: 0.8vmin;
   cursor: pointer;
   transition: transform 0.2s ease;
-  margin: 0 0vmin;
+  margin: 0 0vmin; /* 🔹 espacement horizontal manuel */
 }
 
+/* Effet au survol : léger zoom */
 .zone-couleurs label:hover {
   transform: scale(1.1);
 }
 
+/* Cache la case native */
 .zone-couleurs input[type="checkbox"] {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
+/* Image du pion */
 .zone-couleurs img {
   width: 90%;
   height: auto;
@@ -348,6 +395,7 @@ input[type="radio"]:checked::after {
   transition: filter 0.2s ease;
 }
 
+/* Coche verte discrète en bas à gauche */
 .zone-couleurs label::after {
   content: "✔";
   position: absolute;
@@ -360,43 +408,49 @@ input[type="radio"]:checked::after {
   text-shadow: 0 0 4px black;
 }
 
+/* ✅ Affiche la coche si coché */
 .zone-couleurs label:has(input[type="checkbox"]:checked)::after {
   opacity: 1;
 }
 
+/* === Bouton === */
 .bouton {
   text-align: center;
   margin-top: 1vmin;
 }
 
+/* Stabilisateur invisible */
 #keep-alive {
   position: absolute;
-  inset: 0;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
   pointer-events: none;
 }
 
-/* ====== Plateau - FIX iOS ====== */
+
+
+/* ====== Plateau ====== */
 #plateau-container {
+  container-type: size;
+
   flex-shrink: 0;
   position: relative;
   margin: auto;
-  width: var(--plateau-size);
-  height: calc(var(--plateau-size) * 0.866);
+
+  /* occupe toujours le max possible sans déformer */
+  width: min(98vw, 98vh / 0.866);
+  height: calc(min(98vw, 98vh / 0.866) * 0.866);
+
   display: flex;
   justify-content: center;
   align-items: center;
-  /* 🔹 Force le rendu GPU sur iOS */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
 }
 
+/* Structure hexagones */
 #carteCatan {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
-  position: relative;
-  z-index: 10;
 }
 
 .ligne {
@@ -404,10 +458,7 @@ input[type="radio"]:checked::after {
   gap: 0;
   margin-top: calc(var(--hex-offset-y) * -1 + var(--hex-height));
 }
-
-.ligne:first-child { 
-  margin-top: 0; 
-}
+.ligne:first-child { margin-top: 0; }
 
 /* ====== Hexagone ====== */
 .hex {
@@ -415,22 +466,23 @@ input[type="radio"]:checked::after {
   height: var(--hex-height);
   background-size: cover;
   background-position: center;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 25%
+  );
   position: relative;
   z-index: 10;
-  /* 🔹 Force l'anti-aliasing sur iOS */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
+.ligne .hex + .hex { margin-left: calc(var(--hex-width) * -0.005); }
 
-.ligne .hex + .hex { 
-  margin-left: calc(var(--hex-width) * -0.005); 
-}
-
+/* Numéros */
 .numero {
   position: absolute;
-  top: 50%; 
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   width: 40%;
 }
@@ -443,12 +495,10 @@ input[type="radio"]:checked::after {
   transform-origin: center;
   z-index: 5;
 }
-
 .bord img {
   width: calc(var(--hex-width) * 3.1);
   height: auto;
 }
-
 .bord.b1 { transform: rotate(0deg)    translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
 .bord.b2 { transform: rotate(60deg)   translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
 .bord.b3 { transform: rotate(120deg)  translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
@@ -456,37 +506,39 @@ input[type="radio"]:checked::after {
 .bord.b5 { transform: rotate(240deg)  translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
 .bord.b6 { transform: rotate(300deg)  translateY(calc(var(--bord-radius) * -1)) translate(var(--bord-local-x), var(--bord-local-y)); }
 
-/* ====== Hexagones de fond - FIX PRÉCIS iOS ====== */
+/* ====== Hexagones de fond ====== */
 .hex-fond {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  clip-path: polygon(
+    25% 0%,
+    75% 0%,
+    100% 50%,
+    75% 100%,
+    25% 100%,
+    0% 50%
+  );
   z-index: 1;
+
+   /* --- Ajout pour effet d’apparition --- */
   transition: opacity 0.4s ease;
-  /* 🔹 Force le rendu précis sur iOS */
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translate(-50%, -50%) translateZ(0);
-  -webkit-transform: translate(-50%, -50%) translateZ(0);
-  will-change: transform;
 }
 
+/* Devient visible une fois la génération terminée */
 .hex-fond.visible {
   opacity: 1;
 }
 
-/* 🎯 AJUSTEMENTS PRÉCIS iOS */
 .hex-mer {
-  width: calc(var(--hex-width) * 6.56);  /* 6.55 → 6.56 */
-  height: calc(var(--hex-width) * 6.56 * 0.866);
+  width: calc(var(--hex-width) * 6.55);
+  height: calc(var(--hex-width) * 6.55 * 0.866);
   background-color: #5FA3E3;
 }
-
 .hex-route {
-  width: calc(var(--hex-width) * 5.46);  /* 5.45 → 5.46 */
-  height: calc(var(--hex-width) * 5.46 * 0.866);
+  width: calc(var(--hex-width) * 5.45);
+  height: calc(var(--hex-width) * 5.45 * 0.866);
   background-color: #F5E781;
 }
 
@@ -505,10 +557,13 @@ input[type="radio"]:checked::after {
   transform: translate(-50%, -50%);
 }
 
+/* Couleurs / images spécifiques */
 .col-rouge  { background: url("image/pion/Crouge.png") center/contain no-repeat; }
 .col-bleu   { background: url("image/pion/Cbleu.png") center/contain no-repeat; }
 .col-orange { background: url("image/pion/Corange.png") center/contain no-repeat; }
 .col-beige  { background: url("image/pion/Cbeige.png") center/contain no-repeat; }
+
+
 
 /* ====== Calque routes ====== */
 #routes-layer {
@@ -518,6 +573,7 @@ input[type="radio"]:checked::after {
   z-index: 45;
 }
 
+/* ====== Routes décoratives ====== */
 #routes-layer .route {
   position: absolute;
   width: calc(var(--hex-width) * 0.35);
@@ -531,68 +587,93 @@ input[type="radio"]:checked::after {
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
 }
 
+/* ====== Images de routes par couleur ====== */
 #routes-layer .rou-rouge  { background-image: url("image/pion/Rrouge.png"); }
 #routes-layer .rou-bleu   { background-image: url("image/pion/Rbleu.png"); }
 #routes-layer .rou-orange { background-image: url("image/pion/Rorange.png"); }
 #routes-layer .rou-beige  { background-image: url("image/pion/Rbeige.png"); }
 
-/* ====== Positions des colonies ====== */
+
+/* Exemple positions pour l’hex central */
+/* L1 – Y=17% (3 points) */
 .pos1 { top: 16.7%; left: 37.55%; }
 .pos2 { top: 16.7%; left: 49.95%; }
 .pos3 { top: 16.7%; left: 62.4%; }
+
+/* L2 – Y=20.5% (4 points) */
 .pos4 { top: 20.7%; left: 31.4%; }
 .pos5 { top: 20.7%; left: 43.8%; }
 .pos6 { top: 20.7%; left: 56.2%; }
 .pos7 { top: 20.7%; left: 68.6%; }
+
+/* L3 – Y=29.5% (4 points, identique L2) */
 .pos8  { top: 29.2%; left: 31.4%; }
 .pos9  { top: 29.2%; left: 43.8%; }
 .pos10 { top: 29.2%; left: 56.2%; }
 .pos11 { top: 29.2%; left: 68.6%; }
+
+/* L4 – Y=33% (5 points) */
 .pos12 { top: 33.2%; left: 25.2%; }
 .pos13 { top: 33.2%; left: 37.6%; }
 .pos14 { top: 33.2%; left: 50%; }
 .pos15 { top: 33.2%; left: 62.4%; }
 .pos16 { top: 33.2%; left: 74.8%; }
+
+/* L5 – Y=42% (5 points, identique L4) */
 .pos17 { top: 41.7%; left: 25.2%; }
 .pos18 { top: 41.7%; left: 37.6%; }
 .pos19 { top: 41.7%; left: 50%; }
 .pos20 { top: 41.7%; left: 62.4%; }
 .pos21 { top: 41.7%; left: 74.8%; }
+
+/* L6 – Y=45.5% (6 points) */
 .pos22 { top: 45.7%; left: 19%; }
 .pos23 { top: 45.7%; left: 31.4%; }
 .pos24 { top: 45.7%; left: 43.8%; }
 .pos25 { top: 45.7%; left: 56.2%; }
 .pos26 { top: 45.7%; left: 68.6%; }
 .pos27 { top: 45.7%; left: 81%; }
+
+/* L7 – Y=54.5% (6 points, identique L6) */
 .pos28 { top: 54.2%; left: 19%; }
 .pos29 { top: 54.2%; left: 31.4%; }
 .pos30 { top: 54.2%; left: 43.8%; }
 .pos31 { top: 54.2%; left: 56.2%; }
 .pos32 { top: 54.2%; left: 68.6%; }
 .pos33 { top: 54.2%; left: 81%; }
+
+/* L8 – Y=58% (5 points, identique L5/L4) */
 .pos34 { top: 58.2%; left: 25.2%; }
 .pos35 { top: 58.2%; left: 37.6%; }
 .pos36 { top: 58.2%; left: 50%; }
 .pos37 { top: 58.2%; left: 62.4%; }
 .pos38 { top: 58.2%; left: 74.8%; }
+
+/* L9 – Y=67% (5 points, identique L8/L5/L4) */
 .pos39 { top: 66.7%; left: 25.2%; }
 .pos40 { top: 66.7%; left: 37.6%; }
 .pos41 { top: 66.7%; left: 50%; }
 .pos42 { top: 66.7%; left: 62.4%; }
 .pos43 { top: 66.7%; left: 74.8%; }
+
+/* L10 – Y=70.5% (4 points, identique L2/L3) */
 .pos44 { top: 70.7%; left: 31.4%; }
 .pos45 { top: 70.7%; left: 43.8%; }
 .pos46 { top: 70.7%; left: 56.2%; }
 .pos47 { top: 70.7%; left: 68.6%; }
+
+/* L11 – Y=79.5% (4 points, identique L2/L3) */
 .pos48 { top: 79.2%; left: 31.4%; }
 .pos49 { top: 79.2%; left: 43.8%; }
 .pos50 { top: 79.2%; left: 56.2%; }
 .pos51 { top: 79.2%; left: 68.6%; }
+
+/* L12 – Y=83% (3 points, identique L1) */
 .pos52 { top: 83.2%; left: 37.6%; }
 .pos53 { top: 83.2%; left: 50%; }
 .pos54 { top: 83.2%; left: 62.4%; }
 
-/* ====== Badges ====== */
+
 .badge {
   display: inline-block;
   background: rgba(255, 255, 255, 0.15);
@@ -620,13 +701,14 @@ input[type="radio"]:checked::after {
   border-radius: 50%;
   margin-right: 0.4em;
 }
-
 .dot-rouge  { background-color: #e74c3c; }
 .dot-bleu   { background-color: #3498db; }
 .dot-orange { background-color: #e67e22; }
 .dot-beige  { background-color: #d2b48c; }
 
-/* ====== Sélecteur de langue ====== */
+
+
+/* ===== 🌍 Sélecteur de langue en haut à gauche ===== */
 #lang-switch {
   position: absolute;
   top: 1vmin;
@@ -652,94 +734,78 @@ input[type="radio"]:checked::after {
   border: 0.15vmin solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 0 0.6vmin rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease, opacity 0.2s ease;
-  object-fit: cover;
-  object-position: center;
-  display: block;
+  object-fit: cover;          /* remplit complètement la zone */
+  object-position: center;    /* centré parfaitement */
+  display: block;             /* supprime les petits espaces inline */
 }
 
+
+
+
+/* Pays actif mis en avant */
 #lang-switch button.active img {
   transform: scale(1.15);
   opacity: 1;
 }
 
+/* Les autres un peu atténués */
 #lang-switch button:not(.active) img {
   opacity: 0.6;
 }
 
+/* Effet au survol */
 #lang-switch button:hover img {
   transform: scale(1.1);
   opacity: 0.9;
 }
 
 .logo-bas-droite {
-  position: fixed;
-  bottom: 6vmin;
-  right: 0vmin;
-  width: 12vmin;
-  height: auto;
-  z-index: 1000;
-  pointer-events: none;
+  position: fixed;      /* reste visible même au scroll */
+  bottom: 6vmin;         /* marge par rapport au bas */
+  right: 0vmin;          /* marge par rapport à la droite */
+  width: 12vmin;          /* taille du logo */
+  height: auto;         /* garde les proportions */
+  z-index: 1000;        /* reste au-dessus du contenu */
+  pointer-events: none; /* évite de bloquer les clics sur le contenu */
 }
 
-/* ====== Media Queries ====== */
-
-/* Très petits écrans */
-@media (max-width: 480px) {
-  :root {
-    --plateau-size: min(95vw, 95svh / 0.866);
-  }
-  
-  .logo-bas-droite {
-    width: 10vmin;
-    bottom: 4vmin;
-  }
-  
-  /* 🔹 Ajustement plus précis sur petits écrans */
-  .hex-mer {
-    width: calc(var(--hex-width) * 6.57);
-    height: calc(var(--hex-width) * 6.57 * 0.866);
-  }
-  
-  .hex-route {
-    width: calc(var(--hex-width) * 5.47);
-    height: calc(var(--hex-width) * 5.47 * 0.866);
-  }
-}
-
-/* Écrans moyens */
 @media (min-width: 487px) {
   .logo-bas-droite {
-    bottom: 0vmin;
-    right: 0vmin;
-    width: 8vmin;
+    bottom: 0vmin;         /* marge par rapport au bas */
+    right: 0vmin;          /* marge par rapport à la droite */
+    width: 8vmin;          /* taille du logo */
   }
 }
 
-/* Mode paysage */
+
+
+
+/* === Mode paysage : défilement pour la zone des options === */
 @media (min-aspect-ratio: 1872/1080) {
   .main-container {
     grid-template-areas: "top bottom";
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
     align-items: center;
-    justify-items: stretch;
+    justify-items: stretch; /* ✅ Étire chaque bloc dans toute sa cellule */
+    grid-template-columns: 1fr 1fr;
   }
 
   .top-block {
-    align-items: center;
+    align-items: center;       /* ✅ Centre le titre horizontalement */
     justify-content: flex-start;
-    width: 100%;
+    width: 100%;               /* ✅ S’assure qu’il prenne toute la colonne */
     text-align: center;
   }
 
   .titre {
-    text-align: center;
+    text-align: center;        /* ✅ Centre le texte dans le bloc */
     margin: 2vmin 0;
     width: 100%;
   }
 
   .scrollable-content {
-    max-height: calc(100svh - 17.5vmin);
+    max-height: calc(100vh - 17.5vmin);; /* zone de défilement limitée */
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
@@ -748,12 +814,10 @@ input[type="radio"]:checked::after {
   .scrollable-content::-webkit-scrollbar {
     width: 0.8vmin;
   }
-  
   .scrollable-content::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.4);
     border-radius: 1vmin;
   }
-  
   .scrollable-content::-webkit-scrollbar-track {
     background: transparent;
   }
